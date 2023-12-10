@@ -20,5 +20,8 @@ namespace KlantenService_Steam_Framework.Models
         
         public string Email { get; set; }
         public string Status { get; set; }
+
+        ////adding user name
+        //public string UserName { get; set; }
     }
 }
