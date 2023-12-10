@@ -1,6 +1,7 @@
-﻿@using Microsoft.AspNetCore.Identity
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+﻿@using KlantenService_Steam_Framework.Areas.Identity.Data
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<KlantenServiceUser> SignInManager
+@inject UserManager<KlantenServiceUser> UserManager
 
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
