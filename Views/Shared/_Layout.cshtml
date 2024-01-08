@@ -32,6 +32,13 @@
 							<a class="nav-link text-dark" asp-area="" asp-controller="Games" asp-action="Index">Games</a>
                         </li>
 
+                        @if (User.IsInRole("SystemAdministrator"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Paramaters" asp-action="Index">Parameters</a>
+                            </li>
+                        }
+
                         @*// if the user is admin, show the ProblemTypes link *@
                         @if (User.IsInRole("Admin"))
 						{
