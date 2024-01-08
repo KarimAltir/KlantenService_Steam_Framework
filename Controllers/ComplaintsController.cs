@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using KlantenService_Steam_Framework.Areas.Identity.Data;
 using KlantenService_Steam_Framework.Models;
+using KlantenService_Steam_Framework.Data;
 
 namespace KlantenService_Steam_Framework.Controllers
 {
@@ -22,7 +23,7 @@ namespace KlantenService_Steam_Framework.Controllers
         // GET: Complaints
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Complaint.Include(c => c.Game).Include(c => c.ProblemType);
+            var applicationDbContext = _context.Complaints.Include(c => c.Game).Include(c => c.ProblemType);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -34,7 +35,7 @@ namespace KlantenService_Steam_Framework.Controllers
                 return NotFound();
             }
 
-            var complaint = await _context.Complaint
+            var complaint = await _context.Complaints
                 .Include(c => c.Game)
                 .Include(c => c.ProblemType)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -49,8 +50,8 @@ namespace KlantenService_Steam_Framework.Controllers
         // GET: Complaints/Create
         public IActionResult Create()
         {
-            ViewData["GameId"] = new SelectList(_context.Game, "Id", "Id");
-            ViewData["ProblemTypeId"] = new SelectList(_context.ProblemType, "Id", "Id");
+            ViewData["GameId"] = new SelectList(_context.Games, "Id", "Id");
+            ViewData["ProblemTypeId"] = new SelectList(_context.ProblemTypes, "Id", "Id");
             return View();
         }
 
@@ -67,8 +68,8 @@ namespace KlantenService_Steam_Framework.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["GameId"] = new SelectList(_context.Game, "Id", "Id", complaint.GameId);
-            ViewData["ProblemTypeId"] = new SelectList(_context.ProblemType, "Id", "Id", complaint.ProblemTypeId);
+            ViewData["GameId"] = new SelectList(_context.Games, "Id", "Id", complaint.GameId);
+            ViewData["ProblemTypeId"] = new SelectList(_context.ProblemTypes, "Id", "Id", complaint.ProblemTypeId);
             return View(complaint);
         }
 
@@ -80,13 +81,13 @@ namespace KlantenService_Steam_Framework.Controllers
                 return NotFound();
             }
 
-            var complaint = await _context.Complaint.FindAsync(id);
+            var complaint = await _context.Complaints.FindAsync(id);
             if (complaint == null)
             {
                 return NotFound();
             }
-            ViewData["GameId"] = new SelectList(_context.Game, "Id", "Id", complaint.GameId);
-            ViewData["ProblemTypeId"] = new SelectList(_context.ProblemType, "Id", "Id", complaint.ProblemTypeId);
+            ViewData["GameId"] = new SelectList(_context.Games, "Id", "Id", complaint.GameId);
+            ViewData["ProblemTypeId"] = new SelectList(_context.ProblemTypes, "Id", "Id", complaint.ProblemTypeId);
             return View(complaint);
         }
 
@@ -122,8 +123,8 @@ namespace KlantenService_Steam_Framework.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["GameId"] = new SelectList(_context.Game, "Id", "Id", complaint.GameId);
-            ViewData["ProblemTypeId"] = new SelectList(_context.ProblemType, "Id", "Id", complaint.ProblemTypeId);
+            ViewData["GameId"] = new SelectList(_context.Games, "Id", "Id", complaint.GameId);
+            ViewData["ProblemTypeId"] = new SelectList(_context.ProblemTypes, "Id", "Id", complaint.ProblemTypeId);
             return View(complaint);
         }
 
@@ -135,7 +136,7 @@ namespace KlantenService_Steam_Framework.Controllers
                 return NotFound();
             }
 
-            var complaint = await _context.Complaint
+            var complaint = await _context.Complaints
                 .Include(c => c.Game)
                 .Include(c => c.ProblemType)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -152,10 +153,10 @@ namespace KlantenService_Steam_Framework.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var complaint = await _context.Complaint.FindAsync(id);
+            var complaint = await _context.Complaints.FindAsync(id);
             if (complaint != null)
             {
-                _context.Complaint.Remove(complaint);
+                _context.Complaints.Remove(complaint);
             }
 
             await _context.SaveChangesAsync();
@@ -164,7 +165,7 @@ namespace KlantenService_Steam_Framework.Controllers
 
         private bool ComplaintExists(int id)
         {
-            return _context.Complaint.Any(e => e.Id == id);
+            return _context.Complaints.Any(e => e.Id == id);
         }
     }
 }

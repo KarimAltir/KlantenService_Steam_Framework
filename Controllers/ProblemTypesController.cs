@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using KlantenService_Steam_Framework.Areas.Identity.Data;
 using KlantenService_Steam_Framework.Models;
+using KlantenService_Steam_Framework.Data;
 
 namespace KlantenService_Steam_Framework.Controllers
 {
@@ -22,7 +23,7 @@ namespace KlantenService_Steam_Framework.Controllers
         // GET: ProblemTypes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.ProblemType.ToListAsync());
+            return View(await _context.ProblemTypes.ToListAsync());
         }
 
         // GET: ProblemTypes/Details/5
@@ -33,7 +34,7 @@ namespace KlantenService_Steam_Framework.Controllers
                 return NotFound();
             }
 
-            var problemType = await _context.ProblemType
+            var problemType = await _context.ProblemTypes
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (problemType == null)
             {
@@ -73,7 +74,7 @@ namespace KlantenService_Steam_Framework.Controllers
                 return NotFound();
             }
 
-            var problemType = await _context.ProblemType.FindAsync(id);
+            var problemType = await _context.ProblemTypes.FindAsync(id);
             if (problemType == null)
             {
                 return NotFound();
@@ -124,7 +125,7 @@ namespace KlantenService_Steam_Framework.Controllers
                 return NotFound();
             }
 
-            var problemType = await _context.ProblemType
+            var problemType = await _context.ProblemTypes
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (problemType == null)
             {
@@ -139,10 +140,10 @@ namespace KlantenService_Steam_Framework.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var problemType = await _context.ProblemType.FindAsync(id);
+            var problemType = await _context.ProblemTypes.FindAsync(id);
             if (problemType != null)
             {
-                _context.ProblemType.Remove(problemType);
+                _context.ProblemTypes.Remove(problemType);
             }
 
             await _context.SaveChangesAsync();
@@ -151,7 +152,7 @@ namespace KlantenService_Steam_Framework.Controllers
 
         private bool ProblemTypeExists(int id)
         {
-            return _context.ProblemType.Any(e => e.Id == id);
+            return _context.ProblemTypes.Any(e => e.Id == id);
         }
     }
 }
