@@ -76,6 +76,19 @@ namespace KlantenService_Steam_Framework.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required]
+            [StringLength(maximumLength: 25, MinimumLength = 5)]
+            [Display(Name = "Gebruiker")]
+            public string UserName { get; set; }
+
+            [Required]
+            [Display(Name = "Voornaam")]
+            public string FirstName { get; set; }
+
+            [Required]
+            [Display(Name = "Achternaam")]
+            public string LastName { get; set; }
+
+            [Required]
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
@@ -114,8 +127,11 @@ namespace KlantenService_Steam_Framework.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
+                user.FirstName = Input.FirstName;
+                user.LastName = Input.LastName;
 
-                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
+
+                await _userStore.SetUserNameAsync(user, Input.UserName, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
@@ -124,6 +140,7 @@ namespace KlantenService_Steam_Framework.Areas.Identity.Pages.Account
                     _logger.LogInformation("User created a new account with password.");
 
                     var userId = await _userManager.GetUserIdAsync(user);
+                    await _userManager.AddToRoleAsync(user, "USER");
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(
