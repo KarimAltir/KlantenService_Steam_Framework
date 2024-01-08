@@ -2,8 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using KlantenService_Steam_Framework.Models;
 using Microsoft.AspNetCore.Identity;
+using KlantenService_Steam_Framework.Areas.Identity.Data;
 
-namespace KlantenService_Steam_Framework.Areas.Identity.Data
+namespace KlantenService_Steam_Framework.Data
 {
     public class ApplicationDbContext : IdentityDbContext<KlantenServiceUser>
     {
@@ -15,8 +16,9 @@ namespace KlantenService_Steam_Framework.Areas.Identity.Data
 
         public static async Task DataInitializer(ApplicationDbContext context, UserManager<KlantenServiceUser> userManager)
         {
-            AddParameters();
-            
+            KlantenServiceUser dummy;
+            KlantenServiceUser admin;
+
             if (!context.Users.Any())
             {
                 KlantenServiceUser dummyUser = new KlantenServiceUser
@@ -32,6 +34,7 @@ namespace KlantenService_Steam_Framework.Areas.Identity.Data
                 };
                 context.Users.Add(dummyUser);
                 context.SaveChanges();
+            
 
                 KlantenServiceUser adminUser = new KlantenServiceUser
                 {
@@ -39,11 +42,33 @@ namespace KlantenService_Steam_Framework.Areas.Identity.Data
                     Email = "admin@dummy.xx",
                     UserName = "Admin",
                     FirstName = "Administrator",
-                    LastName = "GroupSpace"
+                    LastName = "KlantenService"
                 };
 
-                var result = await userManager.CreateAsync(adminUser, "Abc!12345");
+            var result = await userManager.CreateAsync(adminUser, "Abc!12345");
+        }
+           
+
+            dummy = context.Users.First(u => u.UserName == "Dummy");
+            admin = context.Users.First(u => u.UserName == "Admin");
+
+            AddParameters(context, admin);
+            Globals.DummyUser = dummy;  // Make sure the dummy user is always available
+
+
+            if (!context.Roles.Any())
+            {
+                context.Roles.AddRange(
+                    new IdentityRole { Name = "SystemAdministrator", Id = "SystemAdministrator", NormalizedName = "SYSTEMADMINISTRATOR" },
+                    new IdentityRole { Name = "User", Id = "User", NormalizedName = "USER" },
+                    new IdentityRole { Name = "UserAdministrator", Id = "UserAdministrator", NormalizedName = "USERADMINISTRATOR" }
+                );
+                context.UserRoles.Add(new IdentityUserRole<string> { RoleId = "SystemAdministrator", UserId = admin.Id });
+                context.UserRoles.Add(new IdentityUserRole<string> { RoleId = "UserAdministrator", UserId = admin.Id });
+
+                context.SaveChanges();
             }
+
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -54,13 +79,34 @@ namespace KlantenService_Steam_Framework.Areas.Identity.Data
             // Add your customizations after calling base.OnModelCreating(builder);
         }
 
-        static void AddParameters()
+        static void AddParameters(ApplicationDbContext context, KlantenServiceUser user)
         {
+            if (!context.Parameters.Any())
+            {
+                context.Parameters.AddRange(
+                    new Parameter { Name = "Version", Value = "0.1.0", Description = "Huidige versie van de parameterlijst", Destination = "System", UserId = user.Id },
+                    new Parameter { Name = "Mail.Server", Value = "ergens.groupspace.be", Description = "Naam van de gebruikte pop-server", Destination = "Mail", UserId = user.Id },
+                    new Parameter { Name = "Mail.Port", Value = "25", Description = "Poort van de smtp-server", Destination = "Mail", UserId = user.Id },
+                    new Parameter { Name = "Mail.Account", Value = "SmtpServer", Description = "Acount-naam van de smtp-server", Destination = "Mail", UserId = user.Id },
+                    new Parameter { Name = "Mail.Password", Value = "xxxyyy!2315", Description = "Wachtwoord van de smtp-server", Destination = "Mail", UserId = user.Id },
+                    new Parameter { Name = "Mail.Security", Value = "true", Description = "Is SSL or TLS encryption used (true or false)", Destination = "Mail", UserId = user.Id },
+                    new Parameter { Name = "Mail.SenderEmail", Value = "administrator.groupspace.be", Description = "E-mail van de smtp-verzender", Destination = "Mail", UserId = user.Id },
+                    new Parameter { Name = "Mail.SenderName", Value = "Administrator", Description = "Naam van de smtp-verzender", Destination = "Mail", UserId = user.Id }
+                );
+                context.SaveChanges();
+            }
 
+            Globals.Parameters = new Dictionary<string, Parameter>();
+            foreach (Parameter parameter in context.Parameters)
+            {
+                Globals.Parameters[parameter.Name] = parameter;
+            }
+            Globals.ConfigureMail();
         }
 
-        public DbSet<KlantenService_Steam_Framework.Models.Game> Game { get; set; } = default!;
-        public DbSet<KlantenService_Steam_Framework.Models.ProblemType> ProblemType { get; set; } = default!;
-        public DbSet<KlantenService_Steam_Framework.Models.Complaint> Complaint { get; set; } = default!;
+        public DbSet<KlantenService_Steam_Framework.Models.Game> Games { get; set; } = default!;
+        public DbSet<KlantenService_Steam_Framework.Models.ProblemType> ProblemTypes { get; set; } = default!;
+        public DbSet<KlantenService_Steam_Framework.Models.Complaint> Complaints { get; set; } = default!;
+        public DbSet<KlantenService_Steam_Framework.Models.Parameter> Parameters { get; set; } = default!; 
     }
 }
