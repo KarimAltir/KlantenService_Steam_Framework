@@ -47,7 +47,7 @@ namespace KlantenService_Steam_Framework.Services
                         else
                             Security = SecureSocketOptions.SslOnConnect;
                     }
-                    //smtp.Connect(Options.Server, Options.Port, Security);
+                    smtp.Connect(Options.Server, Options.Port, Security);
                     smtp.Authenticate(Options.Account, Options.Password);
                     smtp.Send(email);
                     smtp.Disconnect(true);

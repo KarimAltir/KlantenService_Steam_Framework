@@ -85,12 +85,12 @@ namespace KlantenService_Steam_Framework.Data
             {
                 context.Parameters.AddRange(
                     new Parameter { Name = "Version", Value = "0.1.0", Description = "Huidige versie van de parameterlijst", Destination = "System", UserId = user.Id },
-                    new Parameter { Name = "Mail.Server", Value = "ergens.groupspace.be", Description = "Naam van de gebruikte pop-server", Destination = "Mail", UserId = user.Id },
+                    new Parameter { Name = "Mail.Server", Value = "ergens.klantenService.be", Description = "Naam van de gebruikte pop-server", Destination = "Mail", UserId = user.Id },
                     new Parameter { Name = "Mail.Port", Value = "25", Description = "Poort van de smtp-server", Destination = "Mail", UserId = user.Id },
                     new Parameter { Name = "Mail.Account", Value = "SmtpServer", Description = "Acount-naam van de smtp-server", Destination = "Mail", UserId = user.Id },
                     new Parameter { Name = "Mail.Password", Value = "xxxyyy!2315", Description = "Wachtwoord van de smtp-server", Destination = "Mail", UserId = user.Id },
                     new Parameter { Name = "Mail.Security", Value = "true", Description = "Is SSL or TLS encryption used (true or false)", Destination = "Mail", UserId = user.Id },
-                    new Parameter { Name = "Mail.SenderEmail", Value = "administrator.groupspace.be", Description = "E-mail van de smtp-verzender", Destination = "Mail", UserId = user.Id },
+                    new Parameter { Name = "Mail.SenderEmail", Value = "administrator.klantenService.be", Description = "E-mail van de smtp-verzender", Destination = "Mail", UserId = user.Id },
                     new Parameter { Name = "Mail.SenderName", Value = "Administrator", Description = "Naam van de smtp-verzender", Destination = "Mail", UserId = user.Id }
                 );
                 context.SaveChanges();
@@ -101,7 +101,7 @@ namespace KlantenService_Steam_Framework.Data
             {
                 Globals.Parameters[parameter.Name] = parameter;
             }
-            Globals.ConfigureMail();
+            //Globals.ConfigureMail();
         }
 
         public DbSet<KlantenService_Steam_Framework.Models.Game> Games { get; set; } = default!;
