@@ -7,22 +7,35 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using KlantenService_Steam_Framework.Areas.Identity.Data;
 using KlantenService_Steam_Framework.Models;
+using KlantenService_Steam_Framework.Services;
+using KlantenService_Steam_Framework.Data;
 
 namespace KlantenService_Steam_Framework.Controllers
 {
     public class GamesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly GameService _gameService;
+
 
         public GamesController(ApplicationDbContext context)
         {
             _context = context;
+            
+            //maak een HttpClient aan
+            var httpClient = new HttpClient();
+
+            //maak een instantie van GameService aan en geef de HttpClient door
+            _gameService = new GameService(httpClient);
         }
 
         // GET: Games
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Game.ToListAsync());
+            //return View(await _context.Game.ToListAsync());
+
+            var games = await _gameService.GetGamesAsync();
+            return View(games);
         }
 
         // GET: Games/Details/5
@@ -33,7 +46,7 @@ namespace KlantenService_Steam_Framework.Controllers
                 return NotFound();
             }
 
-            var game = await _context.Game
+            var game = await _context.Games
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (game == null)
             {
@@ -73,7 +86,7 @@ namespace KlantenService_Steam_Framework.Controllers
                 return NotFound();
             }
 
-            var game = await _context.Game.FindAsync(id);
+            var game = await _context.Games.FindAsync(id);
             if (game == null)
             {
                 return NotFound();
@@ -124,7 +137,7 @@ namespace KlantenService_Steam_Framework.Controllers
                 return NotFound();
             }
 
-            var game = await _context.Game
+            var game = await _context.Games
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (game == null)
             {
@@ -139,27 +152,29 @@ namespace KlantenService_Steam_Framework.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var game = await _context.Game.FindAsync(id);
+            var game = await _context.Games.FindAsync(id);
             if (game != null)
             {
-                _context.Game.Remove(game);
+                _context.Games.Remove(game);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool GameExists(int id)
-        {
-            return _context.Game.Any(e => e.Id == id);
-        }
-
         // GET: Games/GetGames
         [HttpGet]
         public async Task<IActionResult> GetGames()
         {
-            var games = await _context.Game.ToListAsync();
+            var games = await _gameService.GetGamesAsync();
+            //var games = await _context.Game.ToListAsync();
+
             return Json(games);
+        }
+
+        private bool GameExists(int id)
+        {
+            return _context.Games.Any(e => e.Id == id);
         }
     }
 }
