@@ -1,4 +1,11 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject RoleManager<IdentityRole> RoleManager
+<!DOCTYPE html>
+
+@{
+}
+
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -19,6 +26,16 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
+
+                        @* <p>Your roles: </p>
+                        @foreach (var role in RoleManager.Roles)
+                        {
+                            @if (User.IsInRole(role.Name))
+                            {
+                                <li>@role.Name</li>
+                            }
+                        } *@
+
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
@@ -35,17 +52,20 @@
                         @if (User.IsInRole("SystemAdministrator"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Paramaters" asp-action="Index">Parameters</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Parameters" asp-action="Index">Parameters</a>
                             </li>
                         }
 
-                        @*// if the user is admin, show the ProblemTypes link *@
-                        @if (User.IsInRole("Admin"))
-						{
-							<li class="nav-item">
-								<a class="nav-link text-dark" asp-area="" asp-controller="ProblemTypes" asp-action="Index">ProblemTypes</a>
-							</li>
-						}
+                        @if (User.IsInRole("UserAdministrator"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="ProblemTypes" asp-action="Index">ProblemTypes</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="UserRolesManager" asp-action="Index">UserRoles</a>
+                            </li>
+                        }
+
 
                     </ul>
                     <partial name="_LoginPartial" />
@@ -61,7 +81,11 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2023 - Claint server of steam - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            @if (!string.IsNullOrEmpty(User.Identity.Name))
+            {
+                KlantenService_Steam_Framework.Services.UserStats.GetCountofRequest(User.Identity.Name);
+            }
+            &copy; 2023 - Claint server of steam - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>          
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
