@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" id="complaintForm">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
@@ -18,17 +18,18 @@
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="GameId" class="control-label"></label>
-                <select asp-for="GameId" class ="form-control" asp-items="ViewBag.GameId"></select>
+                <label asp-for="ProblemType" class="control-label"></label>
+                <select id="problemType" class="form-control" asp-for="ProblemTypeId" asp-items="ViewBag.ProblemTypes"></select>
             </div>
-            <div class="form-group">
-                <label asp-for="ProblemTypeId" class="control-label"></label>
-                <select asp-for="ProblemTypeId" class ="form-control" asp-items="ViewBag.ProblemTypeId"></select>
+            <div class="form-group" id="gameField" style="display: none;">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <!-- Verwijder het required attribuut -->
             </div>
-            <div class="form-group">
+            <div class="form-group" id="emailField" style="display: none;">
                 <label asp-for="Email" class="control-label"></label>
                 <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
+                <!-- Verwijder het required attribuut -->
             </div>
             <div class="form-group">
                 <label asp-for="Status" class="control-label"></label>
@@ -42,10 +43,52 @@
     </div>
 </div>
 
+
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
 
+@if (ViewData["ModelStateErrors"] != null)
+{
+    <div class="alert alert-danger">
+        <ul>
+            @foreach (var error in (IEnumerable<string>)ViewData["ModelStateErrors"])
+            {
+                <li>@error</li>
+            }
+        </ul>
+    </div>
+}
+
+
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        // Event listener toevoegen voor wijzigingen in de selectie van probleemtypes
+        document.getElementById('problemType').addEventListener('change', function () {
+            console.log('Probleemtype gewijzigd');
+            var selectedType = this.value;
+            console.log('Geselecteerde type:', selectedType);
+            // Verberg eerst alle velden
+            document.getElementById('gameField').style.display = 'none';
+            document.getElementById('gameField').querySelectorAll('input').forEach(function(input) {
+                input.setAttribute('disabled', 'disabled');
+            });
+            document.getElementById('emailField').style.display = 'none';
+            document.getElementById('emailField').querySelectorAll('input').forEach(function(input) {
+                input.setAttribute('disabled', 'disabled');
+            });
+            // Toon het veld op basis van de geselecteerde waarde van probleemtype
+            if (selectedType === '1') { // Als de waarde '1' overeenkomt met games
+                document.getElementById('gameField').style.display = 'block';
+                document.getElementById('gameField').querySelectorAll('input').forEach(function(input) {
+                    input.removeAttribute('disabled');
+                });
+            } else if (selectedType === '2') { // Als de waarde '2' overeenkomt met account
+                document.getElementById('emailField').style.display = 'block';
+                document.getElementById('emailField').querySelectorAll('input').forEach(function(input) {
+                    input.removeAttribute('disabled');
+                });
+            }
+        });
+    </script>
 }

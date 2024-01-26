@@ -1,0 +1,38 @@
+﻿﻿@using Microsoft.AspNetCore.Localization;
+@using Microsoft.AspNetCore.Mvc.Localization;
+
+@{
+    // ophalen taal van de gebruiker
+    string languageId = "nl";
+    string cookieCulture = Context.Request.Cookies[CookieRequestCultureProvider.DefaultCookieName];
+    if (cookieCulture != null)
+    {
+        languageId = cookieCulture.Substring(2, 2);
+    }
+    string LanguageName = Language.LanguagesById[languageId].Name;
+
+    // ophalen huidige pagina
+    var thisPage = string.IsNullOrEmpty(Context.Request.Path) ? "~/index.html" : $"~{Context.Request.Path.Value}";
+}
+
+<ul class="navbar-nav">
+    <li class="nav-item dropdown">
+        <a class="nav-link text-dark dropdown" data-bs-toggle="dropdown">@LanguageName</a>
+        <ul class="dropdown-menu">
+            @foreach (Language language in Language.Languages)
+                if (language.Id != languageId && language.IsSystemLanguage)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link text-dark"
+                           asp-area=""
+                           asp-controller="Languages"
+                           asp-action="ChangeLanguage"
+                           asp-route-id="@language.Id"
+                           asp-route-returnUrl="@thisPage">
+                            @language.Name
+                        </a>
+                    </li>
+                }
+        </ul>
+    </li>
+</ul>

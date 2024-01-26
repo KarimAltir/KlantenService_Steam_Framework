@@ -3,25 +3,28 @@
 @inject SignInManager<KlantenServiceUser> SignInManager
 @inject UserManager<KlantenServiceUser> UserManager
 
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizer
+
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
     <li class="nav-item">
-        <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@_localizer["Hello"] @User.Identity?.Name</a>
     </li>
     <li class="nav-item">
         <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button  type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                <button type="submit" class="nav-link btn btn-link text-dark">@_localizer["Logout"]</button>
         </form>
     </li>
 }
 else
 {
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">@_localizer["Register"]</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">@_localizer["Login"]</a>
     </li>
 }
 </ul>

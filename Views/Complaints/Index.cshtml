@@ -6,20 +6,20 @@
 
 <h1>Complaint</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.UserId)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Description)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Game)
+                @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ProblemType)
+                @Html.DisplayNameFor(model => model.TypeName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Email)
@@ -34,13 +34,16 @@
 @foreach (var item in Model) {
         <tr>
             <td>
+                @Html.DisplayFor(modelItem => item.UserId)
+            </td> 
+            <td>
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Game.Id)
+                @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ProblemType.Id)
+                @Html.DisplayFor(modelItem => item.TypeName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Email)
@@ -57,3 +60,5 @@
 }
     </tbody>
 </table>
+
+<a asp-action="Create" class="w-10 btn btn-lg btn-primary">Create New</a>

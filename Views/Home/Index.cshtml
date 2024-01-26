@@ -1,8 +1,18 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizer
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">@_localizer["Welcome"]</h1>
+    <br />
+    <p style="font-size: 20px;">@_localizer["Steam is a video game digital distribution service by Valve. It was launched as a standalone software client in September 2003 as a way for Valve to provide automatic updates for their games, and expanded to include games from third-party publishers. Steam has also expanded into an online web-based and mobile digital storefront. Steam offers digital rights management (DRM), server hosting, video streaming, and social networking services. It also provides the user with installation and automatic updating of games, and community features such as friends lists and groups, cloud storage, and in-game voice and chat functionality."]</p>
+    <br />
+    <br />
+    <p style="font-size: 20px;">@_localizer["Steam has had over 1.5 billion player accounts, up from 1 billion accounts from June 2019. The concurrent users peaked at 24.77 million on April 4, 2020. The Steam platform is the largest digital distribution platform for PC gaming, estimated in 2013 to have 75% of the market space. In 2019, the estimated sales of games on Steam was valued at around US$4.3 billion, accounting for at least 18% of global PC game sales. By 2019, the service had over 34,000 games with over 95 million monthly active users."]</p>
+    <br />
+    <br />
+    <p style="font-size: 20px;">@_localizer["Steam's primary service is to allow its users to download games and other software that they have in their virtual software libraries to their local computers as game cache files (GCFs). Initially, Valve was required to be the publisher for these titles since they had sole access to the Steam's database and engine, but with the introduction of the Steamworks software development kit (SDK) in May 2008, anyone could potentially become a publisher to Steam, outside of Valve's involvement to curate titles on the service. Valve became the sole publisher of these titles, and then began opening the platform to other publishers, starting in 2010 with a few of its 'Steamworks' titles. Valve added non-gaming applications to Steam starting in September 2012, starting with a software development kit for Unreal Engine 3. Games and other content can be downloaded and installed remotely, allowing for a user to start playing the game almost immediately after purchase."]</p>
 </div>

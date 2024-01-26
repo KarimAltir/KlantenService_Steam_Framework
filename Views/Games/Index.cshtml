@@ -1,10 +1,12 @@
 ﻿@model IEnumerable<KlantenService_Steam_Framework.Models.Game>
 
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer _localizer
+
 @{
     ViewData["Title"] = "Games";
 }
 
-<h1>Games</h1>
 
 @* <p>
     <a asp-action="Create">Create New</a>
@@ -13,10 +15,7 @@
     <thead>
         <tr>
             <th>
-                Games
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Games_count)
+                <h1>@_localizer["Games"]</h1>
             </th>
             <th></th>
         </tr>
@@ -24,16 +23,18 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-                <img src="@item.Background_image" alt="background image" height="180px"/>
+            <td class="tx_games">
+                <a asp-action="Details" asp-route-id="@item.Id">
+                        <h3>@item.Name</h3><br />
+                        <img src="@item.Background_image" alt="background image" height="350px" />
+                </a>
             </td>
-            <td>
+@*            <td>
                 @Html.DisplayFor(modelItem => item.Games_count)
             </td>
-@*             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+            <td>
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td> *@
         </tr>
