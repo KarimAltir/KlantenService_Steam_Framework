@@ -3,11 +3,17 @@ using Microsoft.EntityFrameworkCore;
 using KlantenService_Steam_Framework.Models;
 using Microsoft.AspNetCore.Identity;
 using KlantenService_Steam_Framework.Areas.Identity.Data;
+using Newtonsoft.Json;
+using KlantenService_Steam_Framework.Services;
+using Microsoft.Extensions.DependencyInjection;
+using SQLitePCL;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace KlantenService_Steam_Framework.Data
 {
     public class ApplicationDbContext : IdentityDbContext<KlantenServiceUser>
     {
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -16,8 +22,44 @@ namespace KlantenService_Steam_Framework.Data
 
         public static async Task DataInitializer(ApplicationDbContext context, UserManager<KlantenServiceUser> userManager)
         {
-            KlantenServiceUser dummy;
-            KlantenServiceUser admin;
+            // add two ProblemTypes in the database
+            if (!context.ProblemTypes.Any())
+            {
+                context.ProblemTypes.AddRange(
+                        new ProblemType { TypeName = "Game" },
+                        new ProblemType { TypeName = "Account" }
+                    );
+                context.SaveChanges();
+            }
+
+            //add 10 games in the database, with Background_image, Released, Rating and Slug
+            //if (!context.Games.Any())
+            //{
+            //    context.Games.AddRange(
+            //            new Game { Id = 1, Name = "Counter-Strike: Global Offensive", Background_image = "https://media.rawg.io/media/games/328/3283617cb7d75d67257fc58339188742.jpg", Released = "2012-08-21", Rating = 4.34, Slug = "counter-strike-global-offensive" },
+            //            new Game { Id = 2, Name = "Dota 2", Background_image = "https://media.rawg.io/media/games/328/3283617cb7d75d67257fc58339188742.jpg", Released = "2013-07-09", Rating = 4.29, Slug = "dota-2" },
+            //            new Game { Id = 3, Name = "Team Fortress 2", Background_image = "https://media.rawg.io/media/games/328/3283617cb7d75d67257fc58339188742.jpg", Released = "2007-10-10", Rating = 4.26, Slug = "team-fortress-2" },
+            //            new Game { Id = 4, Name = "Portal 2", Background_image = "https://media.rawg.io/media/games/328/3283617cb7d75d67257fc58339188742.jpg", Released = "2011-04-18", Rating = 4.25, Slug = "portal-2" },
+            //            new Game { Id = 5, Name = "Left 4 Dead 2", Background_image = "https://media.rawg.io/media/games/328/3283617cb7d75d67257fc58339188742.jpg", Released = "2009-11-16", Rating = 4.24, Slug = "left-4-dead-2" },
+            //            new Game { Id = 6, Name = "Left 4 Dead", Background_image = "https://media.rawg.io/media/games/328/3283617cb7d75d67257fc58339188742.jpg", Released = "2008-11-17", Rating = 4.23, Slug = "left-4-dead" }
+            //        );
+            //    context.SaveChanges();
+            //}
+
+
+            if (!context.Languages.Any())
+            {
+                context.AddRange(
+                    new Language { Id = "- ", Name = "-", IsSystemLanguage = false, IsAvailable = DateTime.MaxValue },
+                    new Language { Id = "en", Name = "English", IsSystemLanguage = true },
+                    new Language { Id = "nl", Name = "Nederlands", IsSystemLanguage = true },
+                    new Language { Id = "ar", Name = "عربي", IsSystemLanguage = true },
+                    new Language { Id = "de", Name = "Deutsch", IsSystemLanguage = true }
+                    );
+                context.SaveChanges();
+            }
+
+            Language.GetLanguages(context);
 
             if (!context.Users.Any())
             {
@@ -49,8 +91,8 @@ namespace KlantenService_Steam_Framework.Data
         }
            
 
-            dummy = context.Users.First(u => u.UserName == "Dummy");
-            admin = context.Users.First(u => u.UserName == "Admin");
+            KlantenServiceUser dummy = context.Users.First(u => u.UserName == "Dummy");
+            KlantenServiceUser admin = context.Users.First(u => u.UserName == "Admin");
 
             AddParameters(context, admin);
             Globals.DummyUser = dummy;  // Make sure the dummy user is always available
@@ -104,9 +146,28 @@ namespace KlantenService_Steam_Framework.Data
             //Globals.ConfigureMail();
         }
 
+  
+
+
         public DbSet<KlantenService_Steam_Framework.Models.Game> Games { get; set; } = default!;
         public DbSet<KlantenService_Steam_Framework.Models.ProblemType> ProblemTypes { get; set; } = default!;
         public DbSet<KlantenService_Steam_Framework.Models.Complaint> Complaints { get; set; } = default!;
-        public DbSet<KlantenService_Steam_Framework.Models.Parameter> Parameters { get; set; } = default!; 
+        public DbSet<KlantenService_Steam_Framework.Models.Parameter> Parameters { get; set; } = default!;
+        public DbSet<KlantenService_Steam_Framework.Models.Language> Languages { get; set; } = default!;
+
+        public async Task UpdateGamesAsync(List<Game> games)
+        {
+            // Assuming you have an ID property in your Game model
+            var existingGameIds = Games.Select(g => g.Id).ToList();
+
+            // Filter out the games that are already in the database
+            var newGames = games.Where(g => !existingGameIds.Contains(g.Id)).ToList();
+
+            // Add the new games to the database
+            Games.AddRange(newGames);
+
+            // Save changes to the database
+            SaveChanges();
+        }
     }
 }
