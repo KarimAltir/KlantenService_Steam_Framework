@@ -19,10 +19,13 @@ namespace KlantenService_Steam_Framework.Models
         [ForeignKey("KlantenServiceUser")]
         public string UserId { get; set; }
 
+        [Display(Name = "LastChanged")]
         public DateTime LastChanged { get; set; } = DateTime.Now;
 
+        [Display(Name = "Obsolete")]
         public DateTime Obsolete { get; set; } = DateTime.MaxValue;
 
+        [Display(Name = "Destination")]
         public string Destination { get; set; }
     }
 }
