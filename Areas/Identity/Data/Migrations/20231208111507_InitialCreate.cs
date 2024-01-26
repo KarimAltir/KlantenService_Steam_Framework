@@ -18,7 +18,6 @@ namespace KlantenService_Steam_Framework.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Background_image = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Games_count = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
