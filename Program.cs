@@ -1,4 +1,4 @@
-﻿using KlantenService_Steam_Framework.Areas.Identity.Data;
+using KlantenService_Steam_Framework.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using KlantenService_Steam_Framework.Data;
@@ -8,6 +8,10 @@ using NETCore.MailKit.Infrastructure.Internal;
 using static KlantenService_Steam_Framework.Services.MailService;
 using KlantenService_Steam_Framework;
 using Microsoft.OpenApi.Models;
+using KlantenService_Steam_Framework.Services;
+using Microsoft.Extensions.DependencyInjection;
+using GroupSpace23.Services;
+using Microsoft.AspNetCore.Hosting;
 
 internal class Program
 {
@@ -21,7 +25,7 @@ internal class Program
             options.UseSqlServer(connectionString));
         builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-        builder.Services.AddDefaultIdentity<KlantenServiceUser>((options) => options.SignIn.RequireConfirmedAccount = true)
+        builder.Services.AddDefaultIdentity<KlantenServiceUser>((options) => options.SignIn.RequireConfirmedAccount = false)
             .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
@@ -41,7 +45,7 @@ internal class Program
         });
 
         // Add services for globalization/localization
-        builder.Services.AddLocalization(options => options.ResourcesPath = "Trssanslations");
+        builder.Services.AddLocalization(options => options.ResourcesPath = "Translations");
         builder.Services.AddMvc()
             .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
             .AddDataAnnotationsLocalization();
@@ -54,7 +58,7 @@ internal class Program
         builder.Services.AddSwaggerGen(c =>
                             {   
                                 c.SwaggerDoc("v1", 
-                                new OpenApiInfo { Title = "ApplicationName", Version = "v1" });
+                                new OpenApiInfo { Title = "KlantenService_Steam_Framework", Version = "v1" });
                             });
 
         builder.Services.Configure<IdentityOptions>(options =>
@@ -78,6 +82,9 @@ internal class Program
             options.User.RequireUniqueEmail = false;
         });
 
+        // Onze dependency aankondigen als service
+        builder.Services.AddTransient<IMyUser, MyUser>();
+
         var app = builder.Build();
 
         Globals.App = app;          // Zorgt dat dit altijd een instantie van de huidige app bijhoudt
@@ -91,8 +98,9 @@ internal class Program
         {
             app.UseDeveloperExceptionPage();
             app.UseSwagger();
-            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "ApplicationName v1"); });
+            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "KlantenService_Steam_Framework v1"); });
         }
+
 
         app.UseStaticFiles();
 
@@ -103,18 +111,39 @@ internal class Program
         using (var scope = app.Services.CreateScope())
         {
             var services = scope.ServiceProvider;
-            ApplicationDbContext context = new ApplicationDbContext(services.GetRequiredService<DbContextOptions<ApplicationDbContext>>());
+            var context = services.GetRequiredService<ApplicationDbContext>();
             var userManager = services.GetRequiredService<UserManager<KlantenServiceUser>>();
             await ApplicationDbContext.DataInitializer(context, userManager);
         }
+
+        var supportedCultures = new[] { "en-US", "nl", "ar", "de" };
+        var localizationOptions = new RequestLocalizationOptions().SetDefaultCulture(supportedCultures[0])
+            .AddSupportedCultures(supportedCultures)
+            .AddSupportedUICultures(supportedCultures);
+        app.UseRequestLocalization(localizationOptions);
+
 
         app.MapControllerRoute(
             name: "default",
             pattern: "{controller=Home}/{action=Index}/{id?}");
         app.MapRazorPages();
 
+        app.UseMiddleware<UserStats>();
+
         app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 
         app.Run();
     }
+
+    public void ConfigureServices(IServiceCollection services)
+    {
+        services.AddScoped<GameService>();
+    }
+
+    public void Configure(IApplicationBuilder app)
+    {
+        // Voeg de GameListMiddleware toe aan de pipeline
+        app.UseMiddleware<GameListMiddleware>();
+    }
+
 }
