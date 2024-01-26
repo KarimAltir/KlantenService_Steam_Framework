@@ -17,8 +17,8 @@ namespace KlantenService_Steam_Framework.Services
             var StartDate = "2003-09-01";
             var EndDate = "2019-09-30";
             var Platforms = "18,1,7";
-            var PageSize = "1000";
-            var pageNumber = "10";
+            var PageSize = "10000";
+            var pageNumber = "1";
 
 
             // Vorm de URL met de API-sleutel
