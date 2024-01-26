@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Steam has had over 1.5 billion player accounts, up from 1 billion accounts from June 2019. The concurrent users peaked at 24.77 million on April 4, 2020. The Steam platform is the largest digital distribution platform for PC gaming, estimated in 2013 to have 75% of the market space. In 2019, the estimated sales of games on Steam was valued at around US$4.3 billion, accounting for at least 18% of global PC game sales. By 2019, the service had over 34,000 games with over 95 million monthly active users." xml:space="preserve">
+    <value>Steam heeft ruim 1,5 miljard spelersaccounts gehad, vergeleken met 1 miljard accounts sinds juni 2019. Het aantal gelijktijdige gebruikers piekte op 4 april 2020 op 24,77 miljoen. Het Steam-platform is het grootste digitale distributieplatform voor pc-gaming, met naar schatting in 2013 naar schatting 75 spelersaccounts. % van de marktruimte. In 2019 werd de geschatte verkoop van games op Steam geschat op ongeveer 4,3 miljard dollar, goed voor minstens 18% van de wereldwijde verkoop van pc-games. In 2019 had de dienst meer dan 34.000 games met meer dan 95 miljoen maandelijkse actieve gebruikers.</value>
+  </data>
+  <data name="Steam is a video game digital distribution service by Valve. It was launched as a standalone software client in September 2003 as a way for Valve to provide automatic updates for their games, and expanded to include games from third-party publishers. Steam has also expanded into an online web-based and mobile digital storefront. Steam offers digital rights management (DRM), server hosting, video streaming, and social networking services. It also provides the user with installation and automatic updating of games, and community features such as friends lists and groups, cloud storage, and in-game voice and chat functionality." xml:space="preserve">
+    <value>Steam is een digitale distributieservice voor videogames van Valve. Het werd in september 2003 gelanceerd als een zelfstandige softwareclient als een manier voor Valve om automatische updates voor hun games te bieden, en werd uitgebreid met games van externe uitgevers. Steam is ook uitgegroeid tot een online webgebaseerde en mobiele digitale winkel. Steam biedt digitaal rechtenbeheer (DRM), serverhosting, videostreaming en sociale netwerkdiensten. Het biedt de gebruiker ook de installatie en automatische updates van games, en communityfuncties zoals vriendenlijsten en groepen, cloudopslag en in-game spraak- en chatfunctionaliteit.</value>
+  </data>
+  <data name="Steam's primary service is to allow its users to download games and other software that they have in their virtual software libraries to their local computers as game cache files (GCFs). Initially, Valve was required to be the publisher for these titles since they had sole access to the Steam's database and engine, but with the introduction of the Steamworks software development kit (SDK) in May 2008, anyone could potentially become a publisher to Steam, outside of Valve's involvement to curate titles on the service. Valve became the sole publisher of these titles, and then began opening the platform to other publishers, starting in 2010 with a few of its 'Steamworks' titles. Valve added non-gaming applications to Steam starting in September 2012, starting with a software development kit for Unreal Engine 3. Games and other content can be downloaded and installed remotely, allowing for a user to start playing the game almost immediately after purchase." xml:space="preserve">
+    <value>De primaire service van Steam is om gebruikers in staat te stellen games en andere software die ze in hun virtuele softwarebibliotheken hebben, naar hun lokale computers te downloaden als gamecachebestanden (GCF's). Aanvankelijk moest Valve de uitgever van deze titels zijn, omdat ze als enige toegang hadden tot de database en engine van Steam, maar met de introductie van de Steamworks software development kit (SDK) in mei 2008 kon iedereen potentieel een uitgever van Steam worden. buiten de betrokkenheid van Valve om titels voor de service samen te stellen. Valve werd de enige uitgever van deze titels en begon vervolgens het platform open te stellen voor andere uitgevers, te beginnen in 2010 met een paar van de "Steamworks" -titels. Valve heeft vanaf september 2012 niet-gamingapplicaties aan Steam toegevoegd, te beginnen met een softwareontwikkelingskit voor Unreal Engine 3. Games en andere inhoud kunnen op afstand worden gedownload en geïnstalleerd, waardoor een gebruiker de game vrijwel onmiddellijk na aankoop kan gaan spelen.</value>
+  </data>
+  <data name="Welcome" xml:space="preserve">
+    <value>Welkom</value>
+  </data>
+</root>
